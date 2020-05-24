@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <!-- Mybatis会动态实现daoImpl,不过需要在mapper文件夹下创建BookDao.xml和AppointmentDao.xml
+  		spring-dao.xml文件会自动扫描mapper文件夹下的配置 -->
+    <!-- 
+    1.namespace是该xml对应的接口的全名
+    2.select和update中的id对应方法名
+    3.resultType是返回值类型
+    4.parameterType是参数类型(可选)
+    5.#{...}填写的是方法的参数 
+    6.parameterType:输入参数类型
+    7.resultType:输出参数类型
+    -->
+<mapper namespace="wang.miansen.roothub.modules.user.dao.UserCheckDao">
+	<!-- 目的：为dao接口方法提供sql语句配置 -->
+	<resultMap id="BaseResultMap" type="wang.miansen.roothub.modules.user.model.UserCheck">
+        <id column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="group_id" jdbcType="INTEGER" property="groupId"/>
+		<result column="visit_num" jdbcType="INTEGER" property="visitNum"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        user_id, status, group_id,visit_num
+    </sql>
+    <select id="selectAll" resultType="UserCheck">
+		SELECT
+        <include refid="Base_Column_List"/>
+		FROM
+			user_check
+		<if test="start != null">
+            limit #{start,jdbcType=INTEGER}
+            <if test="limit != null">
+                ,#{limit,jdbcType=INTEGER}
+            </if>
+        </if>
+	</select>
+	
+	<select id="selectById" resultType="UserCheck">
+	select <include refid="Base_Column_List"/>
+	from user_check where user_id=#{id}
+	</select>
+	
+	<insert id="insertUserCheck" parameterType="wang.miansen.roothub.modules.user.model.UserCheck" keyProperty="userId" useGeneratedKeys="true">
+		INSERT INTO user_check
+		(user_id,
+		status,
+		group_id,
+		visit_num
+		)
+		values
+		(#{userId},
+		#{status},
+		#{groupId},
+		#{visitNum}
+		)
+	</insert>
+	<update id="updateUserCheck" parameterType="wang.miansen.roothub.modules.user.model.UserCheck">
+        UPDATE 
+        	user_check
+        SET	 	
+        	status = #{status},
+        	group_id = #{groupId},
+        	visit_num = #{visitNum}
+        WHERE 
+        	user_id = #{userId}
+    </update>
+    
+    <update id="addVisit" parameterType="java.lang.Integer">
+        UPDATE 
+        	user_check
+        SET	 	
+        	visit_num = visit_num + 1
+        WHERE 
+        	user_id = #{userId}
+    </update>
+</mapper>

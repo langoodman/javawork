@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="wang.miansen.roothub.modules.feedback.dao.FeedbackDao">
+    <resultMap id="BaseResultMap" type="wang.miansen.roothub.modules.feedback.model.Feedback">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+    <result column="user_id" jdbcType="INTEGER" property="uid"/>
+    <result column="content" jdbcType="NVARCHAR" property="content"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="time"/>
+    </resultMap>
+    <sql id="Base_colum_list">
+    a.id,a.user_name,a.user_id,a.content,a.create_time
+    </sql>   
+    <select id="selectAll" resultType="Feedback">
+    select a.* from feedback
+    </select>
+    <delete id="deletById" parameterType="java.lang.Integer">
+    delete from feedback where a.id=#{id}
+    </delete>
+    <delete id="deletByUid" parameterType="java.lang.Integer">
+    delete from feedback where a.user_id=#{uid}
+    </delete>
+       <insert id="insert" parameterType="wang.miansen.roothub.modules.feedback.model.Feedback" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO
+    	feedback(id,user_id,user_name,content) values(#{id},#{uid},#{userName},#{content})
+    </insert>
+    <update id="truncateTable">
+    truncate table feedback
+    </update>
+    </mapper>

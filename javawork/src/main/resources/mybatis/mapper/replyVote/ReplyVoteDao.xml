@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wang.miansen.roothub.modules.replyVote.dao.ReplyVoteDao">
+<resultMap id="BaseResultMap" type="wang.miansen.roothub.modules.replyVote.dao.ReplyVoteDao">
+		<id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="tid" jdbcType="INTEGER" property="tid"/>
+        <result column="rid" jdbcType="INTEGER" property="rid"/>
+        <result column="up_down" jdbcType="BIT" property="upDown"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="time"/>
+        <result column="is_delete" jdbcType="BIT" property="isDelete"/>
+</resultMap>
+<sql id="Base_Column_List">
+a.id,a.uid,a.tid,a.rid,a.up_down,a.create_date,a.is_delete
+</sql>
+<!-- 添加updown记录 -->
+<insert id="insert" parameterType="wang.miansen.roothub.modules.replyVote.model.ReplyVote">
+insert into reply_up_down(uid,tid,rid,up_down) values(#{uid},#{tid},#{rid},#{upDown})
+</insert>
+<!-- 更新投票信息 -->
+<update id="updateVote">
+update reply_up_dow a set a.up_down=#{choice} where a.rid=#{rid} and a.uid=#{uid}
+</update>
+<!-- 更新删除信息 -->
+<update id="updateIsDelete">
+update reply_up_down a set a.is_delete=#{choice} where a.rid=#{rid} and a.uid=#{uid}
+</update>
+<!-- 筛选全部点赞信息 -->
+<select id="selectAll" resultType="ReplyVote">
+select a.* from reply_up_down a
+</select>
+<!-- 筛选用户的当前帖子点赞信息 -->
+<select id="selectByTidAndUid" resultType="ReplyVote">
+select a.* from reply_up_down a where a.tid=#{tid} and a.uid=#{uid} and a.id_delete=0 
+</select>
+<!-- 筛选用户所有点赞信息 -->
+<select id="selectByUid" resultType="ReplyVote">
+select a.* from reply_up_down a where a.uid=#{uid}
+</select>
+<select id="selectByRidAndUid" resultType="ReplyVote">
+select a.* from reply_up_down a where a.rid=#{rid} and a.uid=#{uid} 
+</select>
+<select id="selectUpOrDown" resultType="java.lang.Integer">
+select count(a.*) from reply_up_down where a.up_down=#{upDown} and a.is_delete='0' and a.rid=#{rid}
+</select>
+</mapper>

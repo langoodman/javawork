@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- 引入 application 配置文件 -->
+	<context:property-placeholder ignore-unresolvable="true" file-encoding="UTF-8" location="classpath:application.properties" />
+
+	<!-- 引入redis配置文件 -->
+	<import resource="spring-redis.xml"/>
+
+	<!-- 自动扫描包，将使用 @Component、@Service、@Controller、@Repository 等注解的类
+		 作为 bean 注入到 IOC 容器 -->
+
+	<!--通用模块-->
+	<context:component-scan base-package="wang.miansen.roothub.common.**" />
+
+	<!--系统配置模块-->
+	<context:component-scan base-package="wang.miansen.roothub.config.**" />
+
+	<!--核心模块-->
+	<context:component-scan base-package="wang.miansen.roothub.core.**" />
+
+	<!--存储模块-->
+	<context:component-scan base-package="wang.miansen.roothub.store" />
+
+	<!--第三方集成模块-->
+	<context:component-scan base-package="wang.miansen.roothub.third.**" />
+
+	<!-- 业务模块，扫描 service.impl 包下所有使用注解的类型 -->
+	<context:component-scan base-package="wang.miansen.roothub.modules.collect.service.impl,
+										  wang.miansen.roothub.modules.follow.service.impl,
+										  wang.miansen.roothub.modules.integral.service.impl,
+										  wang.miansen.roothub.modules.node.service.impl,
+										  wang.miansen.roothub.modules.notice.service.impl,
+										  wang.miansen.roothub.modules.qmxGroup.service.impl,
+										  wang.miansen.roothub.modules.reply.service.impl,
+										  wang.miansen.roothub.modules.security.service.impl,
+										  wang.miansen.roothub.modules.sys.service.impl.**,
+										  wang.miansen.roothub.modules.tab.service.impl,
+										  wang.miansen.roothub.modules.tag.service.impl,
+										  wang.miansen.roothub.modules.topic.service.impl,
+										  wang.miansen.roothub.modules.user.service.impl,
+										  wang.miansen.roothub.modules.visit.service.impl,
+										  wang.miansen.roothub.modules.vote.service.impl,
+										  wang.miansen.roothub.modules.friendURL.service.impl,
+										  wang.miansen.roothub.modules.mail.service.impl,
+										  wang.miansen.roothub.modules.feedback.service.impl,
+										  wang.miansen.roothub.modules.replyVote.service.impl" />
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 注入数据库连接池 -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 邮箱配置 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    <property name="host" value="smtp.exmail.qq.com" /><!--设置邮件服务主机-->
+    <property name="username" value="admin@ctguqmx.cn" /><!--/发送者邮箱的用户名 -->
+    <property name="password" value="43u6PsczKifhLdTd" /><!--//发送者邮箱的密码这块内容写密令-->
+    <property name="defaultEncoding" value="UTF-8"></property>  
+    <property name="port" value="587" />
+    <property name="javaMailProperties">
+        <props>
+            <prop key="mail.transport.protocol">smtp</prop>
+            <prop key="mail.smtp.auth">true</prop>
+            <prop key="mail.smtp.starttls.enable">true</prop>
+            <prop key="mail.debug">true</prop>
+            <prop key="java.net.preferIPv4Stack">true</prop>
+        </props>
+    </property>
+</bean>
+	<!-- 配置基于注解的声明式事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+</beans>

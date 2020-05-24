@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="wang.miansen.roothub.modules.friendURL.dao.FriendURLDao">
+    <resultMap id="BaseResultMap" type="wang.miansen.roothub.modules.friendURL.model.FriendURL">
+    <id column="friend_url_id" jdbcType="INTEGER" property="id"/>
+    <result column="url" jdbcType="VARCHAR" property="url"/>
+    <result column="url_name" jdbcType="VARCHAR" property="URLName"/>
+    <result column="weight" jdbcType="INTEGER" property="weight"/>
+    </resultMap>
+    <sql id="Base_Colum_List">
+    a.friend_url_id,a.url,a.url_name,a.weight
+    </sql>
+    <!--根据id筛选url-->
+    <select id="selectById" resultType="FriendURL">
+    SELECT
+    	a.*
+    FROM
+    	friend_url a
+    WHERE
+        a.friend_url_id=#{id}
+    </select>
+    <!-- 根据name筛选url -->
+    <select id="selectByURLName" resultType="FriendURL">
+    SELECT
+    	a.*
+    FROM
+    	friend_url a
+    WHERE
+    	a.url_name = #{name}
+    </select>
+    <!-- 查询所有url并且根据权重排序 -->
+    <select id="selectAll" resultType="FriendURL">
+    SELECT
+    	a.*
+    FROM
+    	friend_url a
+    ORDER BY
+    	a.weight DESC
+    </select>
+    <!-- 查询前面10条url并且根据权重排序 -->
+    <select id="selectAllTop10" resultType="FriendURL">
+    SELECT
+    	a.*
+    FROM
+    	friend_url a
+    ORDER BY
+    	a.weight DESC limit 10;
+    </select>
+    <!-- 插入url -->
+    <insert id="insert" parameterType="wang.miansen.roothub.modules.friendURL.model.FriendURL" keyProperty="id" useGeneratedKeys="true">
+    INSERT INTO
+    	friend_url(url,url_name,weight) values(#{url},#{URLName},#{weight})
+    </insert>
+    <!-- 根据id修改url -->
+    <update id="updateSelective" parameterType="wang.miansen.roothub.modules.friendURL.model.FriendURL">
+    update friend_url
+    <set>
+    <if test="url!=null">
+    url=#{url},
+    </if>
+    <if test="url_name!=null">
+    url_name=#{URLName},
+    </if>
+    <if test="weight!=null">
+    weight=#{weight}
+    </if>
+    </set>
+    where friend_url_id=#{id}
+    </update>
+    
+    <!-- 根据id删除url -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from
+    	friend_url
+    where
+    	a.friend_url_id=#{id}
+    </delete>
+    </mapper>
