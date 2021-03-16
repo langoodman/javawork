@@ -120,8 +120,8 @@ INSERT INTO `system_config` VALUES (28, 'redis_ssl', '0', 'redis服务是否开�
 INSERT INTO `system_config` VALUES (29, 'default_upload', '0', '默认上传', 2, 'radio', NULL, 0, 0);
 INSERT INTO `system_config` VALUES (30, 'local_upload', '0', '自定义上传', 2, 'radio', NULL, 0, 0);
 INSERT INTO `system_config` VALUES (31, 'static_url', '/static/**', '静态文件访问URL（默认上传和自定义上传的URL最好设置成一样的，否则更换上传方式后会导致之前的资源访问不了），注意最后有个\"/**\"', 30, 'text', NULL, 0, 0);
-INSERT INTO `system_config` VALUES (32, 'accessKeyId', 'LTAI4FqKqJp6bJhLcmA3tA6w', 'AccessKeyId（强烈推荐这种方式）', 45, 'text', NULL, 0, 0);
-INSERT INTO `system_config` VALUES (33, 'accessKeySecret', 'TvJiNpGVWP9HMMR5XvYLsJpZGTW8dk', 'AccessKeySecret', 45, 'text', NULL, 0, 0);
+INSERT INTO `system_config` VALUES (32, 'accessKeyId', '', 'AccessKeyId（强烈推荐这种方式）', 45, 'text', NULL, 0, 0);
+INSERT INTO `system_config` VALUES (33, 'accessKeySecret', '', 'AccessKeySecret', 45, 'text', NULL, 0, 0);
 INSERT INTO `system_config` VALUES (34, 'endpoint', 'http://oss-cn-beijing.aliyuncs.com', 'Endpoint', 45, 'text', NULL, 0, 0);
 INSERT INTO `system_config` VALUES (35, 'bucketName', 'ctguqmx-bbs-img', 'BucketName', 45, 'text', NULL, 0, 0);
 INSERT INTO `system_config` VALUES (36, 'oss_filedir', 'images/', '阿里云OSS静态文件存储路径，注意前面没有\"/\"，后面有 \"/\"', 45, 'text', NULL, 0, 0);
